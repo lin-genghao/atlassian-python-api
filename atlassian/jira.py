@@ -4,7 +4,7 @@ from __future__ import annotations
 import logging
 import os
 import re
-from typing import TYPE_CHECKING, Any, BinaryIO, Literal, cast
+from typing import TYPE_CHECKING, Any, BinaryIO, Literal, cast, Iterable
 from warnings import warn
 
 from deprecated import deprecated
@@ -145,7 +145,7 @@ class Jira(AtlassianRestAPI):
 
         return self.get(url, params=params)
 
-    def get_all_permissions(self):
+    def get_all_permissions(self) -> dict | None:
         """
         Returns all permissions that are present in the Jira instance -
         Global, Project and the global ones added by plugins
@@ -159,7 +159,9 @@ class Jira(AtlassianRestAPI):
     Reference: https://docs.atlassian.com/software/jira/docs/api/REST/8.5.0/#api/2/application-properties
     """
 
-    def get_property(self, key: T_id | None = None, permission_level: str | None = None, key_filter: str | None = None):
+    def get_property(
+        self, key: T_id | None = None, permission_level: str | None = None, key_filter: str | None = None
+    ) -> dict | None:
         """
         Returns an application property
         :param key: str
@@ -180,7 +182,7 @@ class Jira(AtlassianRestAPI):
 
         return self.get(url, params=params)
 
-    def set_property(self, property_id: T_id, value: str):
+    def set_property(self, property_id: T_id, value: str) -> dict | None:
         """
         Modify an application property via PUT. The "value" field present in the PUT will override the existing value.
         :param property_id:
@@ -207,7 +209,7 @@ class Jira(AtlassianRestAPI):
     Reference: https://docs.atlassian.com/software/jira/docs/api/REST/8.5.0/#api/2/applicationrole
     """
 
-    def get_all_application_roles(self):
+    def get_all_application_roles(self) -> dict | None:
         """
         Returns all ApplicationRoles in the system
         :return:
@@ -215,7 +217,7 @@ class Jira(AtlassianRestAPI):
         url = self.resource_url("applicationrole")
         return self.get(url) or {}
 
-    def get_application_role(self, role_key: str):
+    def get_application_role(self, role_key: str) -> dict | None:
         """
         Returns the ApplicationRole with passed key if it exists
         :param role_key: str
@@ -242,7 +244,7 @@ class Jira(AtlassianRestAPI):
             list_attachments_id.append({"filename": attachment["filename"], "attachment_id": attachment["id"]})
         return list_attachments_id
 
-    def get_attachment(self, attachment_id: T_id):
+    def get_attachment(self, attachment_id: T_id) -> dict | None:
         """
         Returns the meta-data for an attachment, including the URI of the actual attached file
         :param attachment_id: int
@@ -290,7 +292,7 @@ class Jira(AtlassianRestAPI):
         except Exception as e:
             raise e
 
-    def get_attachment_content(self, attachment_id: T_id):
+    def get_attachment_content(self, attachment_id: T_id) -> dict | None:
         """
         Returns the content for an attachment
         :param attachment_id: int
@@ -300,7 +302,7 @@ class Jira(AtlassianRestAPI):
         url = "{base_url}/content/{attachment_id}".format(base_url=base_url, attachment_id=attachment_id)
         return self.get(url)
 
-    def remove_attachment(self, attachment_id: T_id):
+    def remove_attachment(self, attachment_id: T_id) -> dict | None:
         """
         Remove an attachment from an issue
         :param attachment_id: int
@@ -310,7 +312,7 @@ class Jira(AtlassianRestAPI):
         url = "{base_url}/{attachment_id}".format(base_url=base_url, attachment_id=attachment_id)
         return self.delete(url)
 
-    def get_attachment_meta(self):
+    def get_attachment_meta(self) -> dict | None:
         """
         Returns the meta information for an attachments,
         specifically if they are enabled and the maximum upload size allowed
@@ -319,7 +321,7 @@ class Jira(AtlassianRestAPI):
         url = self.resource_url("attachment/meta")
         return self.get(url)
 
-    def get_attachment_expand_human(self, attachment_id: T_id):
+    def get_attachment_expand_human(self, attachment_id: T_id) -> dict | None:
         """
         Returns the information for an expandable attachment in human-readable format
         :param attachment_id: int
@@ -329,7 +331,7 @@ class Jira(AtlassianRestAPI):
         url = "{base_url}/{attachment_id}/expand/human".format(base_url=base_url, attachment_id=attachment_id)
         return self.get(url)
 
-    def get_attachment_expand_raw(self, attachment_id: T_id):
+    def get_attachment_expand_raw(self, attachment_id: T_id) -> dict | None:
         """
         Returns the information for an expandable attachment in raw format
         :param attachment_id: int
@@ -351,7 +353,7 @@ class Jira(AtlassianRestAPI):
         filter: str | None = None,
         from_date: str | None = None,
         to_date: str | None = None,
-    ):
+    ) -> dict | None:
         """
         Returns auditing records filtered using provided parameters
         :param offset: the number of record from which search starts
@@ -381,7 +383,7 @@ class Jira(AtlassianRestAPI):
         url = self.resource_url("auditing/record")
         return self.get(url, params=params) or {}
 
-    def post_audit_record(self, audit_record: dict | str):
+    def post_audit_record(self, audit_record: dict | str) -> dict | None:
         """
         Store a record in Audit Log
         :param audit_record: json with compat https://docs.atlassian.com/jira/REST/schema/audit-record#
@@ -395,7 +397,7 @@ class Jira(AtlassianRestAPI):
     Reference: https://docs.atlassian.com/software/jira/docs/api/REST/8.5.0/#api/2/avatar
     """
 
-    def get_all_system_avatars(self, avatar_type: str = "user"):
+    def get_all_system_avatars(self, avatar_type: str = "user") -> dict | None:
         """
         Returns all system avatars of the given type.
         :param avatar_type:
@@ -411,11 +413,11 @@ class Jira(AtlassianRestAPI):
     Reference: https://docs.atlassian.com/software/jira/docs/api/REST/8.5.0/#api/2/cluster
     """
 
-    def get_cluster_all_nodes(self):
+    def get_cluster_all_nodes(self) -> dict | None:
         url = self.resource_url("cluster/nodes")
         return self.get(url)
 
-    def delete_cluster_node(self, node_id: T_id):
+    def delete_cluster_node(self, node_id: T_id) -> dict | None:
         """
         Delete the node from the cluster if state of node is OFFLINE
         :param node_id: str
@@ -425,7 +427,7 @@ class Jira(AtlassianRestAPI):
         url = "{base_url}/{node_id}".format(base_url=base_url, node_id=node_id)
         return self.delete(url)
 
-    def set_node_to_offline(self, node_id: T_id):
+    def set_node_to_offline(self, node_id: T_id) -> dict | None:
         """
         Change the node's state to offline if the node is reporting as active, but is not alive
         :param node_id: str
@@ -435,14 +437,15 @@ class Jira(AtlassianRestAPI):
         url = "{base_url}/{node_id}/offline".format(base_url=base_url, node_id=node_id)
         return self.put(url)
 
-    def get_cluster_alive_nodes(self):
+    def get_cluster_alive_nodes(self) -> list:
         """
         Get cluster nodes where alive = True
         :return: list of node dicts
         """
-        return [_ for _ in self.get_cluster_all_nodes() if _["alive"]]
+        nodes = self.get_cluster_all_nodes()
+        return [_ for _ in nodes.values() if _["alive"]] if nodes else []
 
-    def request_current_index_from_node(self, node_id: T_id):
+    def request_current_index_from_node(self, node_id: T_id) -> dict | None:
         """
         Request current index from node (the request is processed asynchronously)
         :return:
@@ -456,7 +459,7 @@ class Jira(AtlassianRestAPI):
     Reference: https://confluence.atlassian.com/support/create-a-support-zip-using-the-rest-api-in-data-center-applications-952054641.html
     """
 
-    def generate_support_zip_on_nodes(self, node_ids: list):
+    def generate_support_zip_on_nodes(self, node_ids: list) -> dict | None:
         """
         Generate a support zip on targeted nodes of a cluster
         :param node_ids: list
@@ -466,7 +469,7 @@ class Jira(AtlassianRestAPI):
         url = "/rest/troubleshooting/latest/support-zip/cluster"
         return self.post(url, data=data)
 
-    def check_support_zip_status(self, cluster_task_id: T_id):
+    def check_support_zip_status(self, cluster_task_id: T_id) -> dict | None:
         """
         Check status of support zip creation task
         :param cluster_task_id: str
@@ -475,7 +478,7 @@ class Jira(AtlassianRestAPI):
         url = "/rest/troubleshooting/latest/support-zip/status/cluster/{}".format(cluster_task_id)
         return self.get(url)
 
-    def download_support_zip(self, file_name: str):
+    def download_support_zip(self, file_name: str) -> bytes:
         """
         Download created support zip file
         :param file_name: str
@@ -489,12 +492,12 @@ class Jira(AtlassianRestAPI):
     Reference: https://docs.atlassian.com/software/jira/docs/api/REST/8.5.0/#api/2/cluster/zdu
     """
 
-    def get_cluster_zdu_state(self):
+    def get_cluster_zdu_state(self) -> dict | None:
         url = self.resource_url("cluster/zdu/state")
         return self.get(url)
 
     # Issue Comments
-    def issue_get_comments(self, issue_id: T_id):
+    def issue_get_comments(self, issue_id: T_id) -> dict | None:
         """
         Get Comments on an Issue.
         :param issue_id: Issue ID
@@ -505,7 +508,7 @@ class Jira(AtlassianRestAPI):
         url = "{base_url}/{issue_id}/comment".format(base_url=base_url, issue_id=issue_id)
         return self.get(url)
 
-    def issues_get_comments_by_id(self, *args):
+    def issues_get_comments_by_id(self, *args: int) -> dict | None:
         """
         Get Comments on Multiple Issues
         :param *args: int Issue ID's
@@ -840,7 +843,7 @@ class Jira(AtlassianRestAPI):
         url = "{base_url}/{id}".format(base_url=base_url, id=filter_id)
         return self.get(url)
 
-    def update_filter(self, filter_id: T_id, jql: str, **kwargs):
+    def update_filter(self, filter_id: T_id, jql: str, **kwargs: Any):
         """
         :param filter_id: int
         :param jql: str
@@ -1407,7 +1410,7 @@ class Jira(AtlassianRestAPI):
             params=params,
         )
 
-    def get_issue_labels(self, issue_key: str):
+    def get_issue_labels(self, issue_key: str) -> dict | None:
         """
         Get issue labels.
         :param issue_key:
@@ -1417,7 +1420,11 @@ class Jira(AtlassianRestAPI):
         url = "{base_url}/{issue_key}?fields=labels".format(base_url=base_url, issue_key=issue_key)
         if self.advanced_mode:
             return self.get(url)
-        return (self.get(url) or {}).get("fields").get("labels")
+        d = self.get(url) or {}
+        f = d.get("fields")
+        if f:
+            return f.get("labels")
+        return None
 
     def update_issue(self, issue_key: T_id, update: dict | str) -> dict | None:
         """
@@ -1741,7 +1748,7 @@ class Jira(AtlassianRestAPI):
         except HTTPError as e:
             if e.response.status_code == 404:
                 # Raise ApiError as the documented reason is ambiguous
-                log.error("couldn't find issue: ", issue["key"])
+                log.error("couldn't find issue: ", issue)
                 raise ApiNotFoundError(
                     "There is no content with the given issue ud,"
                     "or the calling user does not have permission to view the issue",
@@ -1882,7 +1889,7 @@ class Jira(AtlassianRestAPI):
         )
         return self.put(url, data=data)
 
-    def delete_issue_remote_link_by_id(self, issue_key: str, link_id: T_id):
+    def delete_issue_remote_link_by_id(self, issue_key: str, link_id: T_id) -> dict | None:
         """
         Deletes Remote Link on Issue
         :param issue_key: str
@@ -1894,27 +1901,23 @@ class Jira(AtlassianRestAPI):
         )
         return self.delete(url)
 
-    def get_issue_transitions(self, issue_key: str):
+    def get_issue_transitions(self, issue_key: str) -> list[dict]:
         if self.advanced_mode:
-            return [
-                {
-                    "name": transition["name"],
-                    "id": int(transition["id"]),
-                    "to": transition["to"]["name"],
-                }
-                for transition in (self.get_issue_transitions_full(issue_key).json() or {}).get("transitions")
-            ]
+            resp = cast(Response, self.get_issue_transitions_full(issue_key))
+            d: dict[str, list] = resp.json() or {}
         else:
-            return [
-                {
-                    "name": transition["name"],
-                    "id": int(transition["id"]),
-                    "to": transition["to"]["name"],
-                }
-                for transition in (self.get_issue_transitions_full(issue_key) or {}).get("transitions")
-            ]
+            d = self.get_issue_transitions_full(issue_key) or {}
 
-    def issue_transition(self, issue_key: str, status: str):
+        return [
+            {
+                "name": transition["name"],
+                "id": int(transition["id"]),
+                "to": transition["to"]["name"],
+            }
+            for transition in cast(list[dict], d.get("transitions"))
+        ]
+
+    def issue_transition(self, issue_key: str, status: str) -> dict | None:
         return self.set_issue_status(issue_key, status)
 
     def set_issue_status(
@@ -1970,12 +1973,12 @@ class Jira(AtlassianRestAPI):
     def get_issue_status(self, issue_key: str):
         base_url = self.resource_url("issue")
         url = "{base_url}/{issue_key}?fields=status".format(base_url=base_url, issue_key=issue_key)
-        return (((self.get(url) or {}).get("fields") or {}).get("status") or {}).get("name") or {}
+        return (self.get(url) or {}).__getitem__("fields").__getitem__("status").__getitem__("name")
 
-    def get_issue_status_id(self, issue_key: str):
+    def get_issue_status_id(self, issue_key: str) -> str:
         base_url = self.resource_url("issue")
         url = "{base_url}/{issue_key}?fields=status".format(base_url=base_url, issue_key=issue_key)
-        return (self.get(url) or {}).get("fields").get("status").get("id")
+        return (self.get(url) or {}).__getitem__("fields").__getitem__("status").__getitem__("id")
 
     def get_issue_transitions_full(
         self, issue_key: str, transition_id: T_id | None = None, expand: str | None = None
@@ -3160,7 +3163,7 @@ class Jira(AtlassianRestAPI):
     def get_status_id_from_name(self, status_name: str):
         base_url = self.resource_url("status")
         url = "{base_url}/{name}".format(base_url=base_url, name=status_name)
-        return int((self.get(url) or {}).get("id"))
+        return int((self.get(url) or {}).__getitem__("id"))
 
     def get_status_for_project(self, project_key: str):
         base_url = self.resource_url("project")
@@ -3878,7 +3881,7 @@ api-group-workflows/#api-rest-api-2-workflow-search-get)
         url = "{base_url}/{scheme_id}".format(base_url=base_url, scheme_id=scheme_id)
 
         if only_levels is True:
-            return self.get(url).get("levels")
+            return (self.get(url) or {}).__getitem__("levels")
         else:
             return self.get(url)
 
