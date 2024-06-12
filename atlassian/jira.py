@@ -3401,7 +3401,7 @@ class Jira(AtlassianRestAPI):
         url = "{base_url}/{screen_id}/availableFields".format(base_url=base_url, screen_id=screen_id)
         return self.get(url)
 
-    def get_screen_tabs(self, screen_id: T_id) -> list:
+    def get_screen_tabs(self, screen_id: T_id) -> Optional[list]:
         """
         Get tabs for the screen id
         :param screen_id:
@@ -3409,9 +3409,9 @@ class Jira(AtlassianRestAPI):
         """
         base_url = self.resource_url("screens")
         url = "{base_url}/{screen_id}/tabs".format(base_url=base_url, screen_id=screen_id)
-        return self.get(url)
+        return self.get(url)  # type: ignore[return-value]
 
-    def get_screen_tab_fields(self, screen_id: T_id, tab_id: T_id) -> list:
+    def get_screen_tab_fields(self, screen_id: T_id, tab_id: T_id) -> Optional[list]:
         """
         Get fields by the tab id and the screen id
         :param tab_id:
@@ -3422,7 +3422,7 @@ class Jira(AtlassianRestAPI):
         url = "{base_url}/{screen_id}/tabs/{tab_id}/fields".format(
             base_url=base_url, screen_id=screen_id, tab_id=tab_id
         )
-        return self.get(url)
+        return self.get(url)  # type: ignore[return-value]
 
     def get_all_screen_fields(self, screen_id: T_id) -> list:
         """
@@ -3430,12 +3430,12 @@ class Jira(AtlassianRestAPI):
         :param screen_id:
         :return:
         """
-        screen_tabs = self.get_screen_tabs(screen_id)
+        screen_tabs = self.get_screen_tabs(screen_id) or []
         fields: list = []
         for screen_tab in screen_tabs:
             tab_id = screen_tab["id"]
             if tab_id:
-                tab_fields = self.get_screen_tab_fields(screen_id=screen_id, tab_id=tab_id)
+                tab_fields = self.get_screen_tab_fields(screen_id=screen_id, tab_id=tab_id) or []
                 fields = fields + tab_fields
         return fields
 
