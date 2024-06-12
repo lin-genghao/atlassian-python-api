@@ -1,19 +1,17 @@
 # coding=utf-8
-from typing_extensions import Literal
 import logging
 import os
 import re
-from typing import TYPE_CHECKING, Any, BinaryIO, cast, Optional, Union, Dict, List
+from typing import Any, BinaryIO, Dict, List, Optional, Union, cast
 from warnings import warn
 
 from deprecated import deprecated
 from requests import HTTPError, Response
+from typing_extensions import Literal
 
 from .errors import ApiNotFoundError, ApiPermissionError
 from .rest_client import AtlassianRestAPI
-
-if TYPE_CHECKING:
-    from .typehints import T_id, T_resp_json
+from .typehints import T_id, T_resp_json
 
 log = logging.getLogger(__name__)
 
@@ -234,7 +232,7 @@ class Jira(AtlassianRestAPI):
     def get_attachments_ids_from_issue(self, issue: T_id) -> List[Dict[str, str]]:
         """
         Get attachments IDs from jira issue
-        :param jira issue key: str
+        :param issue: str jira issue key
         :return: list of integers attachment IDs
         """
         issue_id = self.get_issue(issue)["fields"]["attachment"]
@@ -512,7 +510,7 @@ class Jira(AtlassianRestAPI):
     def issues_get_comments_by_id(self, *args: int) -> T_resp_json:
         """
         Get Comments on Multiple Issues
-        :param *args: int Issue ID's
+        :param args: int Issue ID's
         :raises: requests.exceptions.HTTPError
         :return:
         """
@@ -1431,7 +1429,7 @@ class Jira(AtlassianRestAPI):
 
     def update_issue(self, issue_key: T_id, update: Union[str, dict]) -> T_resp_json:
         """
-        :param issue: the issue to update
+        :param issue_key: the issue to update
         :param update: the update to make
         :return: True if successful, False if not
         """
@@ -1440,7 +1438,7 @@ class Jira(AtlassianRestAPI):
 
     def label_issue(self, issue_key: T_id, labels: list):
         """
-        :param issue: the issue to update
+        :param issue_key: the issue to update
         :param labels: the labels to add
         :return: True if successful, False if not
         """
@@ -1485,7 +1483,7 @@ class Jira(AtlassianRestAPI):
         original_value = self.advanced_mode
         self.advanced_mode = True
         try:
-            resp = self.issue(issue_key, fields="*none")
+            resp = cast(Response, self.issue(issue_key, fields="*none"))
             if resp.status_code == 404:
                 log.info('Issue "%s" does not exists', issue_key)
                 return False
