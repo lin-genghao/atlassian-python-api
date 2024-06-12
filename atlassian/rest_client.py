@@ -351,7 +351,8 @@ class AtlassianRestAPI(object):
         trailing: bool | None = ...,
         absolute: bool = ...,
         advanced_mode: Literal[True],
-    ) -> bytes: ...
+    ) -> bytes:
+        ...
 
     # not_json_response True
     @overload
@@ -367,7 +368,8 @@ class AtlassianRestAPI(object):
         trailing: bool | None = ...,
         absolute: bool = ...,
         advanced_mode: bool = ...,
-    ) -> bytes: ...
+    ) -> bytes:
+        ...
 
     # advanced mode True
     @overload
@@ -383,7 +385,8 @@ class AtlassianRestAPI(object):
         absolute: bool = ...,
         *,
         advanced_mode: Literal[True],
-    ) -> Response: ...
+    ) -> Response:
+        ...
 
     # both False
     @overload
@@ -398,7 +401,8 @@ class AtlassianRestAPI(object):
         trailing: bool | None = ...,
         absolute: bool = ...,
         advanced_mode: Literal[False] = ...,
-    ) -> T_resp_json: ...
+    ) -> T_resp_json:
+        ...
 
     # basic overall case
     @overload
@@ -413,7 +417,8 @@ class AtlassianRestAPI(object):
         trailing: bool | None = ...,
         absolute: bool = ...,
         advanced_mode: bool = ...,
-    ) -> T_resp_get: ...
+    ) -> T_resp_get:
+        ...
 
     def get(
         self,
@@ -478,7 +483,8 @@ class AtlassianRestAPI(object):
         trailing: bool | None = ...,
         absolute: bool = ...,
         advanced_mode: Literal[False] = ...,
-    ) -> T_resp_json: ...
+    ) -> T_resp_json:
+        ...
 
     @overload
     def post(
@@ -493,7 +499,8 @@ class AtlassianRestAPI(object):
         absolute: bool = ...,
         *,
         advanced_mode: Literal[False] = ...,
-    ) -> T_resp_json: ...
+    ) -> T_resp_json:
+        ...
 
     @overload
     def post(
@@ -507,7 +514,8 @@ class AtlassianRestAPI(object):
         trailing: bool | None = ...,
         absolute: bool = ...,
         advanced_mode: Literal[False] = ...,
-    ) -> T_resp_json: ...
+    ) -> T_resp_json:
+        ...
 
     # advanced True
     @overload
@@ -523,7 +531,8 @@ class AtlassianRestAPI(object):
         absolute: bool = ...,
         *,
         advanced_mode: Literal[True],
-    ) -> Response: ...
+    ) -> Response:
+        ...
 
     # basic overall case
     @overload
@@ -538,7 +547,8 @@ class AtlassianRestAPI(object):
         trailing: bool | None = ...,
         absolute: bool = ...,
         advanced_mode: bool = ...,
-    ) -> Response | dict | None: ...
+    ) -> Response | dict | None:
+        ...
 
     def post(
         self,
@@ -593,7 +603,8 @@ class AtlassianRestAPI(object):
         absolute: bool = ...,
         *,
         advanced_mode: Literal[False],
-    ) -> T_resp_json: ...
+    ) -> T_resp_json:
+        ...
 
     @overload
     def put(
@@ -606,7 +617,8 @@ class AtlassianRestAPI(object):
         params: dict | None = ...,
         absolute: bool = ...,
         advanced_mode: Literal[False] = ...,
-    ) -> T_resp_json: ...
+    ) -> T_resp_json:
+        ...
 
     # advanced True
     @overload
@@ -621,7 +633,8 @@ class AtlassianRestAPI(object):
         absolute: bool = ...,
         *,
         advanced_mode: Literal[True],
-    ) -> Response: ...
+    ) -> Response:
+        ...
 
     # basic overall case
     @overload
@@ -635,7 +648,8 @@ class AtlassianRestAPI(object):
         params: dict | None = ...,
         absolute: bool = ...,
         advanced_mode: bool = ...,
-    ) -> Response | dict | None: ...
+    ) -> Response | dict | None:
+        ...
 
     def put(
         self,
@@ -728,7 +742,8 @@ class AtlassianRestAPI(object):
         absolute: bool = ...,
         *,
         advanced_mode: Literal[False],
-    ) -> T_resp_json: ...
+    ) -> T_resp_json:
+        ...
 
     @overload
     def delete(
@@ -740,7 +755,8 @@ class AtlassianRestAPI(object):
         trailing: bool | None = ...,
         absolute: bool = ...,
         advanced_mode: Literal[False] = ...,
-    ) -> T_resp_json: ...
+    ) -> T_resp_json:
+        ...
 
     # advanced True
     @overload
@@ -754,7 +770,8 @@ class AtlassianRestAPI(object):
         absolute: bool = ...,
         *,
         advanced_mode: Literal[True],
-    ) -> Response: ...
+    ) -> Response:
+        ...
 
     # basic overall case
     @overload
@@ -767,7 +784,8 @@ class AtlassianRestAPI(object):
         trailing: bool | None = ...,
         absolute: bool = ...,
         advanced_mode: bool = ...,
-    ) -> T_resp: ...
+    ) -> T_resp:
+        ...
 
     def delete(
         self,
