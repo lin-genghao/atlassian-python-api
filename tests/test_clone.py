@@ -12,9 +12,9 @@ from atlassian import Confluence
 import os
 import time
 
-source_host = "http://confluence.mmcuav.com:8002"
-source_username = "genghaolin"
-source_password = "Lgh201022"
+source_host = "http://confluence.com:8002"
+source_username = "username"
+source_password = "password"
 
 source_confluence = Confluence(
     url=source_host,
@@ -22,9 +22,9 @@ source_confluence = Confluence(
     password=source_password,
 )
 
-target_host = "http://192.168.31.60:8090"
-target_username = "root"
-target_password = "Lgh201022"
+target_host = "http://192.168.31.1:8090"
+target_username = "username"
+target_password = "password"
 
 target_confluence = Confluence(
     url=target_host,
