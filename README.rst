@@ -158,6 +158,10 @@ If you want to see the response in pretty print format JSON. Feel free for use c
     # and then print using pprint(result) instead of print(result)
     pprint(response)
 
+How to clone?
+cd tests
+python test_clone.py
+
 How to contribute?
 __________________
 First of all, I am happy for any PR requests.
