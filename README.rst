@@ -159,8 +159,10 @@ If you want to see the response in pretty print format JSON. Feel free for use c
     pprint(response)
 
 How to clone?
-cd tests
-python test_clone.py
+__________________
+.. code-block:: python
+    cd tests
+    python test_clone.py
 
 How to contribute?
 __________________
