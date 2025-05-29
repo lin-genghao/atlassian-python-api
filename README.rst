@@ -160,7 +160,8 @@ If you want to see the response in pretty print format JSON. Feel free for use c
 
 How to clone?
 __________________
-.. code-block:: python
+.. code-block:: bash
+
     cd tests
     python test_clone.py
 
