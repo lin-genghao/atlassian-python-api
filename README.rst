@@ -165,6 +165,8 @@ __________________
     cd tests
     python test_clone.py
 
+// ... existing code ...
+
 How to contribute?
 __________________
 First of all, I am happy for any PR requests.
