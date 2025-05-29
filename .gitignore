@@ -125,4 +125,4 @@ Pipfile
 Pipfile.lock
 
 
-test/attachment_tests/
+attachment_tests/
