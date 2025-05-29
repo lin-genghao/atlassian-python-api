@@ -123,3 +123,6 @@ venv_/
 
 Pipfile
 Pipfile.lock
+
+
+test/attachment_tests/

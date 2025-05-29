@@ -4,10 +4,14 @@ from datetime import datetime
 
 from atlassian import Confluence
 
+host = "http://confluence.mmcuav.com:8002"
+username = "genghaolin"
+password = "genghaolin"
+
 confluence = Confluence(
-    url="http://localhost:8090",
-    username="admin",
-    password="admin",
+    url=host,
+    username=username,
+    password=password,
 )
 
 logging.basicConfig(level=logging.DEBUG)
